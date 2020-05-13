@@ -1,5 +1,7 @@
 from epub_conversion.utils import open_book, convert_epub_to_lines, convert_lines_to_text
 
+
+# NOT WORKING!!
 book = open_book("data/nad-niemnem.epub")
 
 lines = convert_epub_to_lines(book)
