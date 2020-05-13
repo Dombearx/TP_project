@@ -89,7 +89,7 @@ class Ui_MainWindow(object):
         self.inputFile = QtWidgets.QFileDialog.getOpenFileName(
             self.mainWindow, "QFileDialog.getOpenFileName()", "", options=options)
         if self.inputFile:
-            self.inputFile = str(self.inputFile)
+            self.inputFile = str(self.inputFile[0])
             self.lines = tagger.readFile(self.inputFile)
 
             fname = "./data_tagged/nad-niemnem.txt"
@@ -97,12 +97,14 @@ class Ui_MainWindow(object):
                 with open(fname, "r") as f:
                     self.firstIndex = len(f.readlines())
             else:
-                self.firsIndex = 0
-            self.textBrowser.setText(self.lines[self.firsIndex])
+                self.firstIndex = 0
+            self.textBrowser.setText(self.lines[self.firstIndex])
 
     def tag(self, tag):
         with open("./data_tagged/nad-niemnem.txt", "a") as f:
             f.write(tagger.tagSentence(self.textBrowser.toPlainText(), tag))
+        self.firstIndex += 1
+        self.textBrowser.setText(self.lines[self.firstIndex])
 
     def tagAsNature(self):
         self.tag("N")
