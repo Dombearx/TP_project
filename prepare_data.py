@@ -2,6 +2,7 @@ import collections
 from stempel import StempelStemmer
 import re
 from stop_words import get_stop_words
+import pprint as pp
 
 
 class pieceOfData():
@@ -22,6 +23,13 @@ class pieceOfData():
 def readFile(fileName):
     f = open(fileName, "r")
     return f.readlines()
+
+
+def makeFile(lines, filename):
+    f = open(filename, "w")
+    for line in lines:
+        f.write(line + "\n")
+    f.close()
 
 
 if __name__ == "__main__":
@@ -77,6 +85,8 @@ if __name__ == "__main__":
 
     for piece in data:
         for word in piece.words:
+            if word == None:
+                continue
             if word not in bagOfWords:
                 bagOfWords[word] = 1
             else:
@@ -90,10 +100,15 @@ if __name__ == "__main__":
         for word in listOfWords:
             piece.vector.append(piece.words.count(word))
 
-    counter = collections.Counter(tags)
+    vectors = []
+    for piece in data:
+        vectors.append("".join(map(str, piece.vector)))
 
-    print(data[0])
-    print(data[1])
-    print(data[2])
+    makeFile(vectors, "vectorized_data.txt")
 
-    print(counter)
+    print(listOfWords[623])
+    print(listOfWords[624])
+    print(listOfWords[625])
+    print(listOfWords[626])
+
+    makeFile(listOfWords, "bagOfWords.txt")

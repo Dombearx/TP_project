@@ -8,10 +8,9 @@ def readFile(fileName):
 
 if __name__ == "__main__":
 
-    lines = readFile("./data_tagged/nad-niemnem.txt")
+    bagOfWords = {}
 
-    tags = [line.strip()[-1].strip() for line in lines]
-
-    counter = collections.Counter(tags)
-
-    print(counter)
+    bagOfWords[0] = "aaa"
+    bagOfWords[1] = "bbb"
+    bagOfWords[2] = "ccc"
+    bagOfWords[3] = "ddd"
