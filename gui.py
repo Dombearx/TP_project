@@ -92,7 +92,7 @@ class Ui_MainWindow(object):
             self.inputFile = str(self.inputFile[0])
             self.lines = tagger.readFile(self.inputFile)
 
-            fname = "./data_tagged/nad-niemnem.txt"
+            fname = "./data_tagged/" + self.inputFile.split("/")[-1]
             if os.path.isfile(fname):
                 with open(fname, "r") as f:
                     self.firstIndex = len(f.readlines())
@@ -101,7 +101,7 @@ class Ui_MainWindow(object):
             self.textBrowser.setText(self.lines[self.firstIndex])
 
     def tag(self, tag):
-        with open("./data_tagged/nad-niemnem.txt", "a") as f:
+        with open("./data_tagged/" + self.inputFile.split("/")[-1], "a") as f:
             f.write(tagger.tagSentence(self.textBrowser.toPlainText(), tag))
         self.firstIndex += 1
         self.textBrowser.setText(self.lines[self.firstIndex])

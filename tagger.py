@@ -1,6 +1,6 @@
 
 def readFile(fileName):
-    f = open(fileName, "r")
+    f = open(fileName, "r", encoding="utf-8")
     return f.readlines()
 
 
