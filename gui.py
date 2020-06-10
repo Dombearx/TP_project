@@ -98,11 +98,14 @@ class Ui_MainWindow(object):
                     self.firstIndex = len(f.readlines())
             else:
                 self.firstIndex = 0
+            f = self.textBrowser.font()
+            f.setPointSize(12)
+            self.textBrowser.setFont(f)
             self.textBrowser.setText(self.lines[self.firstIndex])
 
     def tag(self, tag):
         with open("./data_tagged/" + self.inputFile.split("/")[-1], "a") as f:
-            f.write(tagger.tagSentence(self.textBrowser.toPlainText(), tag))
+            f.write(tagger.tagSentence(self.lines[self.firstIndex], tag))
         self.firstIndex += 1
         self.textBrowser.setText(self.lines[self.firstIndex])
 
