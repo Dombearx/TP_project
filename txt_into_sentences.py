@@ -13,9 +13,17 @@ f.close()
 
 sent_text = nltk.sent_tokenize(text)
 
-output = open(dir_path+"\\nad_niemniem_lines.txt", "w", encoding="utf-8-sig")
+for i in range(len(sent_text)):
+    sent_text[i] = sent_text[i].replace('—','-')
+    sent_text[i] = sent_text[i].replace('\n', ' ')
+    sent_text[i] = sent_text[i].replace('\t', ' ')
+
+
+output = open(dir_path+"\\nad_niemniem_lines_2.txt", "w", encoding="utf-8-sig")
 
 for l in sent_text:
-    output.write(l+"\n")
+    output.write(l)
 
 output.close()
+
+# '— - A skądżeś to pan wziął tyle dziewcząt?''—- Co tam!'
