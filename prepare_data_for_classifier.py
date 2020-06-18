@@ -12,13 +12,13 @@ class pieceOfData():
         self.line = line
         self.tag = tag
         self.words = []
-        self.vector = []
+        # self.vector = []
 
     def __repr__(self):
-        return "line: " + self.line + " \ntag: " + self.tag + "\n" + "words: " + " ".join(self.words) + "\n" + "vector: " + "".join(map(str, self.vector))
+        return "line: " + self.line + " \ntag: " + self.tag + "\n" + "words: " + " ".join(self.words) + "\n"
 
     def __str__(self):
-        return "line: " + self.line + " \ntag: " + self.tag + "\n" + "words: " + " ".join(self.words) + "\n" + "vector: " + "".join(map(str, self.vector))
+        return "line: " + self.line + " \ntag: " + self.tag + "\n" + "words: " + " ".join(self.words) + "\n"
 
 
 def readFile(fileName):
@@ -27,7 +27,7 @@ def readFile(fileName):
 
 
 def makeFile(lines, filename):
-    f = open(filename, "w")
+    f = open(filename, "w", encoding="utf-8")
     for line in lines:
         f.write(line)
     f.close()
@@ -36,7 +36,7 @@ def makeFile(lines, filename):
 if __name__ == "__main__":
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    readed = readFile(dir_path+"\\data_tagged\\nad_niemniem_lines_test.txt")
+    readed = readFile(dir_path+"\\data_tagged\\nad_niemniem_lines.txt")
 
     lines = [line.strip()[:-1].strip().lower() for line in readed]
 
@@ -112,9 +112,26 @@ if __name__ == "__main__":
         zeros = "0"*(5-l)
         name = str(d.tag) + zeros + str(num) + ".txt"
 
-        makeFile(" ".join(d.words), dir_path+"\\training_set\\"+str(d.tag)+"\\"+name)
+        if len(d.words) > 0: # utworzył się plik, który był pusty, więc to dodałem
+
+            # usuwanie None - wersja wstępna
+            for w in d.words:
+                if w is None: 
+                    d.words.remove(w)
+
+            try:
+                makeFile(" ".join(d.words), dir_path+"\\training_set\\"+str(d.tag)+"\\"+name)
+            except:
+                print("num: "+ str(num))
+                print("name: "+ str(d.tag) + zeros + str(num) + ".txt")
+                print("line: "+d.line)
+                print("tag: "+d.tag)
+                print("words: ")
+                print(d.words)
+
+        if num % 100 == 0: print("postęp: "+str(num)+"\n")
         
-    print("finish")
+    print("\nfinish\n")
 
     # bagOfWords = {}
 
@@ -140,10 +157,5 @@ if __name__ == "__main__":
     #     vectors.append("".join(map(str, piece.vector)))
 
     # makeFile(vectors, "vectorized_data2.txt")
-
-    # print(listOfWords[623])
-    # print(listOfWords[624])
-    # print(listOfWords[625])
-    # print(listOfWords[626])
 
     # makeFile(listOfWords, "bagOfWords2.txt")
