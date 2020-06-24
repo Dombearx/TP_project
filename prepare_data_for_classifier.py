@@ -22,7 +22,7 @@ class pieceOfData():
 
 
 def readFile(fileName):
-    f = open(fileName, "r")
+    f = open(fileName, "r", encoding="utf-8")
     return f.readlines()
 
 
@@ -36,7 +36,7 @@ def makeFile(lines, filename):
 if __name__ == "__main__":
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    readed = readFile(dir_path+"\\data_tagged\\nad_niemniem_lines.txt")
+    readed = readFile(dir_path+"\\data_tagged\\data_for_training.txt")
 
     lines = [line.strip()[:-1].strip().lower() for line in readed]
 
@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
         if len(d.words) > 0: # utworzył się plik, który był pusty, więc to dodałem
 
-            # usuwanie None - wersja wstępna
+            # usuwanie None
             for w in d.words:
                 if w is None: 
                     d.words.remove(w)
