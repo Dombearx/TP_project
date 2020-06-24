@@ -104,6 +104,12 @@ if __name__ == "__main__":
     for piece in data:
         vectors.append("".join(map(str, piece.vector)))
 
+    phrazes = []
+    for piece in data:
+        phrazes.append(" ".join(map(str, piece.words)))
+
+    makeFile(phrazes, "lemmatized_data.txt")
+
     makeFile(vectors, "vectorized_data.txt")
 
     print(listOfWords[623])
