@@ -1,10 +1,12 @@
-import fitz
-
-from fpdf import FPDF
-
+from sklearn import datasets
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.linear_model import SGDClassifier
+from sklearn.pipeline import Pipeline
+import numpy as np
 import docx
 from docx.shared import RGBColor
-from docx2pdf import convert
+import pickle
 
 
 def readFile(fileName):
@@ -12,19 +14,48 @@ def readFile(fileName):
     return f.readlines()
 
 
+class Classifier:
+
+    def __init__(self):
+        with open('../svm_clf.pickle', 'rb') as f:
+            self.svm_clf = pickle.load(f)
+
+            self.predicted = []
+            self.lines = []
+            self.target_names = ['N', 'O', 'P']
+
+    def getClass(self, index):
+        return self.target_names[index]
+
+    def predict(self, line):
+        self.lines.append(line)
+        self.predicted.append(self.svm_clf.predict([line])[0])
+
+        return self.predicted[-1]
+
+    def createDocx(self, filename):
+        doc = docx.Document()
+
+        for class_num, line in zip(self.predicted, self.lines):
+
+            if(self.getClass(class_num) == 'N'):
+                run = doc.add_paragraph().add_run()
+                run.text = line
+                run.font.underline = True
+                run.font.bold = True
+                run.font.color.rgb = RGBColor(0x00, 0x99, 0x33)
+            else:
+                parag = doc.add_paragraph(line)
+
+        doc.save("".join(filename.split(".")[:-1]) + '.docx')
+
+
 if __name__ == "__main__":
     lines = readFile("test.txt")
 
-    doc = docx.Document()
+    cls = Classifier()
     for line in lines:
-        parag = doc.add_paragraph(line)
+        cls.predict(line)
 
-    for n, parag in enumerate(doc.paragraphs):
-        if (n % 10 == 0):
-            run = parag.add_run()
-            run.text = parag.text
-            run.font.underline = True
-            run.font.bold = True
-            run.font.color.rgb = RGBColor(0xff, 0x00, 0x00)
-
-    doc.save('result.docx')
+    cls.createDocx()
+    print("Done")
